@@ -137,6 +137,13 @@
         .dark .policy-content::-webkit-scrollbar-thumb { background-color: #6b7280; }
 
     </style>
+<style>
+  /* Enables natural momentum scrolling on iOS */
+  #categoryDropdownList {
+    -webkit-overflow-scrolling: touch;
+  }
+</style>
+
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300">
 
@@ -156,12 +163,72 @@
             </div>
         </header>
 
+<!-- Tabs -->
+        <div id="tabs-container" class="relative bg-gray-200 dark:bg-gray-800 p-1 rounded-full shadow-inner mb-8 w-full max-w-md mx-auto flex items-center justify-around">
+            <div id="active-tab-slider" class="absolute top-1 bottom-1 left-0 bg-white dark:bg-gray-700 rounded-full shadow-md transition-all duration-300 ease-in-out"></div>
+            <button data-tab="formulas" class="tab-btn active-tab relative z-10 w-full px-4 py-2 text-base sm:text-lg font-medium">Formulas</button>
+            <button data-tab="shortcuts" class="tab-btn relative z-10 w-full px-4 py-2 text-base sm:text-lg font-medium">Shortcuts</button>
+            <button data-tab="favorites" class="tab-btn relative z-10 w-full px-4 py-2 text-base sm:text-lg font-medium flex items-center justify-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                Favorites
+            </button>
+        </div>
+
         <!-- Controls: Search, Tabs, and Theme Toggle -->
         <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
             <div class="relative w-full sm:w-auto flex-grow">
                 <input type="text" id="searchInput" placeholder="Search hundreds of formulas & shortcuts..." class="w-full pl-10 pr-4 py-2 border rounded-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
             </div>
+
+	    <!-- NEW: All-Categories Dropdown -->
+<div class="relative w-full sm:w-72 mt-2 sm:mt-0">
+  <button id="categoryDropdownBtn"
+	  aria-haspopup="listbox"
+          aria-expanded="false"
+          aria-controls="categoryDropdownList"
+          class="w-full px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-full flex items-center justify-between hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+    <span id="selectedCategoryText" class="truncate">All Categories</span>
+    <svg class="w-4 h-4 opacity-70" viewBox="0 0 20 20" fill="currentColor">
+      <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.08 1.04l-4.25 4.25a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z"/>
+    </svg>
+  </button>
+
+  <div id="categoryDropdownList"
+     class="hidden absolute z-50 mt-2 w-full max-h-80 overflow-y-auto overscroll-contain scroll-smooth
+            bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl">
+
+    <!-- JS injects category items -->
+  </div>
+</div>
+<!-- NEW: Level tab with Basic / Intermediate / Advanced buttons -->
+<div id="level-tab" class="w-full">
+  <div class="mt-2 flex flex-wrap items-centre justify-centre gap-2">
+    <button id="btnLevelAll" role="button" tabindex="0"
+            class="px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 text-sm sm:text-base">
+      All
+    </button>
+    <button id="btnLevelBasic" role="button" tabindex="0"
+            class="px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 text-sm sm:text-base">
+      Basic
+    </button>
+    <button id="btnLevelIntermediate" role="button" tabindex="0"
+            class="px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 text-sm sm:text-base">
+      Intermediate
+    </button>
+    <button id="btnLevelAdvanced" role="button" tabindex="0"
+            class="px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 text-sm sm:text-base">
+      Advanced
+    </button>
+  </div>
+</div>
+
+<!-- Reset Button -->
+<button id="btnResetFilters"
+        class="ml-2 px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 text-sm sm:text-base hover:bg-gray-100 dark:hover:bg-gray-700">
+  Reset All
+</button>
+
             <div class="flex items-center gap-2">
                 <button id="theme-toggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
                     <svg id="theme-icon-light" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
@@ -185,17 +252,6 @@
                 </div>
             </div>
         </div>
-        
-        <!-- Tabs -->
-        <div id="tabs-container" class="relative bg-gray-200 dark:bg-gray-800 p-1 rounded-full shadow-inner mb-8 w-full max-w-md mx-auto flex items-center justify-around">
-            <div id="active-tab-slider" class="absolute top-1 bottom-1 left-0 bg-white dark:bg-gray-700 rounded-full shadow-md transition-all duration-300 ease-in-out"></div>
-            <button data-tab="formulas" class="tab-btn active-tab relative z-10 w-full px-4 py-2 text-base sm:text-lg font-medium">Formulas</button>
-            <button data-tab="shortcuts" class="tab-btn relative z-10 w-full px-4 py-2 text-base sm:text-lg font-medium">Shortcuts</button>
-            <button data-tab="favorites" class="tab-btn relative z-10 w-full px-4 py-2 text-base sm:text-lg font-medium flex items-center justify-center gap-1">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-                Favorites
-            </button>
-        </div>
 
         <!-- Alphabet Filters -->
         <div id="alphabet-filters" class="flex flex-wrap justify-center gap-1 mb-6">
@@ -203,7 +259,7 @@
         </div>
 
         <!-- Category Filters -->
-        <div id="category-filters" class="flex flex-wrap justify-center gap-2 mb-6">
+        <div id="category-filters" class="hidden flex flex-wrap justify-center gap-2 mb-6">
             <!-- Filter buttons will be injected here -->
         </div>
 
@@ -650,9 +706,6 @@
   { name: 'INT', category: 'Math & Rounding', description: 'Removes decimal portion of a number.', syntax: '=INT(B2)', example: 'If B2 = 99.99, result = 99.' },
   { name: 'MOD', category: 'Math & Rounding', description: 'Returns remainder after division.', syntax: '=MOD(25,7)', example: '25 ÷ 7 leaves remainder 4.' },
 
-
-  { name: 'AND', category: 'Logical & Comparison', description: 'Checks if all conditions are TRUE.', syntax: '=AND(A2>0,B2="Yes")', example: 'TRUE if account balance > 0 and KYC = Yes.' },
-  { name: 'OR', category: 'Logical & Comparison', description: 'Checks if any condition is TRUE.', syntax: '=OR(A2="Gold",B2>100000)', example: 'TRUE if customer type = Gold OR balance > ₹1 L.' },
   { name: 'NOT', category: 'Logical & Comparison', description: 'Reverses a logical value.', syntax: '=NOT(A2="Closed")', example: 'TRUE if account is not Closed.' },
   { name: 'XOR', category: 'Logical & Comparison', description: 'TRUE if one condition is true, not both.', syntax: '=XOR(A2="Yes",B2="Yes")', example: 'TRUE if exactly one of the two approvals is Yes.' },
   { name: 'IFNA', category: 'Logical & Comparison', description: 'Returns custom value if formula gives #N/A.', syntax: '=IFNA(VLOOKUP(A2,Data,2,0),"Not Found")', example: 'Shows "Not Found" if customer ID missing.' },
@@ -739,8 +792,7 @@
   { name: 'CD Ratio', category: 'Bank Branch Performance Metrics', description: 'Credit to Deposit Ratio.', syntax: '=Advances/Deposits', example: '₹1985 Cr ÷ ₹4390 Cr = 45 %.' },
   { name: 'CASA %', category: 'Bank Branch Performance Metrics', description: 'Proportion of Current and Savings Accounts.', syntax: '=(Current+Savings)/Total Deposit', example: '₹362 + ₹3000 / ₹4390 = 77 % CASA.' },
   { name: 'Profit per Employee', category: 'Bank Branch Performance Metrics', description: 'Average profit generated per employee.', syntax: '=Total Profit/No of Staff', example: '₹9 Cr / 90 = ₹10 L per employee.' },
-
-  { name: '=CUBESET("ThisWorkbookDataModel","[Region].[All]")', example: 'Create a set of all Regions from your model for use in reports.' },
+  
   { name: 'CUBEVALUE', category: 'Power Query / Data Model Helpers', description: 'Returns a measure or value from the cube/model.', syntax: '=CUBEVALUE("ThisWorkbookDataModel","[Measures].[Total Sales]")', example: 'Pull your Total Sales measure directly into a worksheet cell.' },
   { name: 'CUBEMEMBER', category: 'Power Query / Data Model Helpers', description: 'Returns a specific member from a dimension.', syntax: '=CUBEMEMBER("ThisWorkbookDataModel","[Product].[Loans]")', example: 'Reference the "Loans" product member for slicer-like reports.' },
   { name: 'CUBERANKEDMEMBER', category: 'Power Query / Data Model Helpers', description: 'Returns the nth member in a set.', syntax: '=CUBERANKEDMEMBER("ThisWorkbookDataModel",A1,1)', example: 'If A1 holds a set of branches, return the top-ranked branch.' },
@@ -965,8 +1017,7 @@
 { name:'WeightedGapPercent', category:'Banking KPI', description:'Measures weighted achievement against budget.', syntax:'=(Ach/Budget)*Weight', example:'If 90% achieved and weight 20, score = 18.' },
 { name:'BranchRank', category:'Banking KPI', description:'Ranks branches based on performance within circle.', syntax:'=RANK.EQ(A1,A:A)', example:'If A1=500 Cr deposit, shows branch rank among peers.' },
 { name:'IF', category:'Logical', description:'Checks a condition and returns one value for TRUE and another for FALSE.', syntax:'=IF(A1>100,"High","Low")', example:'If A1=120, result = “High”.' },
-{ name:'AND', category:'Logical', description:'Tests multiple conditions at once.', syntax:'=AND(A1>50,B1<100)', example:'If both conditions hold, returns TRUE.' },
-{ name:'OR', category:'Logical', description:'Checks if any condition is TRUE.', syntax:'=OR(A1>50,B1>100)', example:'Returns TRUE if either test passes.' },
+
 { name:'NOT', category:'Logical', description:'Reverses the result of a logical test.', syntax:'=NOT(A1>10)', example:'If A1=5, returns TRUE.' },
 { name:'TRUE', category:'Logical', description:'Returns the logical value TRUE.', syntax:'=TRUE()', example:'Can be used to mark “valid” cells.' },
 { name:'FALSE', category:'Logical', description:'Returns the logical value FALSE.', syntax:'=FALSE()', example:'Often used in comparison formulas.' },
@@ -1078,9 +1129,39 @@
 { name:'LINEST', category:'Data Science', description:'Returns regression line statistics.', syntax:'=LINEST(Y_range,X_range,TRUE,TRUE)', example:'Estimates relationship between sales and price.' },
 { name:'WEBSERVICE', category:'Web Integration', description:'Fetches data from a web URL.', syntax:'=WEBSERVICE("https://api.exchangerate.host/latest")', example:'Pulls live currency exchange rates into Excel.' },
 { name:'FILTERXML', category:'Web Integration', description:'Extracts XML data from a web service.', syntax:'=FILTERXML(A1,"//USD")', example:'Extracts USD rate from the XML response.' },
-
-
         ];
+// Auto-assign a difficulty level to each formula based on category
+
+const BASIC_CATS = new Set([
+  'Core Excel Starter Kit', 'Basics & Logic', 'Text & Formatting', 'Count & Frequency',
+  'Math & Rounding', 'Date & Time', 'Information', 'Math & Trig', 'Text', 'Financial'
+]);
+
+const INTERMEDIATE_CATS = new Set([
+  'Lookup & Reference', 'Advanced Lookup', 'Conditional Math', 'Database & Information',
+  'Dashboard & Sheet Info', 'Array & Filter', 'Data Validation & List Automation',
+  'Dynamic Array & Lambda', 'Data Analysis', 'Forecasting', 'Power Query / Data Model'
+]);
+
+const ADVANCED_CATS = new Set([
+  'Probability & Statistical Advanced', 'Advanced Statistical & Analytical Tools',
+  'Array Math & Matrix Operations', 'Excel + AI Integration', 'Simulation',
+  'AI & Copilot', 'Matrix & Geometry', 'Risk & Portfolio', 'Scenario Analysis',
+  'Web Integration', 'Dynamic Data Cleaning & Transformation'
+]);
+
+function categoryToLevel(cat) {
+  if (BASIC_CATS.has(cat)) return 'Basic';
+  if (INTERMEDIATE_CATS.has(cat)) return 'Intermediate';
+  if (ADVANCED_CATS.has(cat)) return 'Advanced';
+  return 'Intermediate'; // fallback
+}
+
+// 🔄 Assign level to each formula if missing
+formulas.forEach(f => {
+  if (!f.level) f.level = categoryToLevel(f.category);
+});
+
 
         const shortcuts = [
             // General
@@ -1104,6 +1185,10 @@
             { name: 'Quick Analysis', keys: 'Ctrl + Q', category: 'Power', description: 'A: Select your data. B: Press these keys. C: A small icon appears letting you instantly add charts, totals, conditional formatting, and sparklines.' },
             { name: 'Go To Special', keys: 'F5 or Ctrl + G, then Alt + S', category: 'Power', description: 'A: Press F5, then Alt+S. B: A menu appears to select all cells that are blank, have formulas, or contain errors. C: An amazing tool for cleaning up messy data.' },
         ];
+
+// Give every item a default level so filtering works
+(formulas || []).forEach(it => { if (!it.level) it.level = 'Basic'; });
+(shortcuts || []).forEach(it => { if (!it.level) it.level = 'Basic'; });
 
         const synonymMap = {
             // This map enhances search by linking related terms.
@@ -1394,7 +1479,7 @@
             const handleLogout = () => {
                 localStorage.removeItem('excelVaultCurrentUser');
                 updateUserUI(null);
-		document.getElementById('greeting').textContent = `${timeOfDayGreeting}, Sonali!`;
+		document.getElementById('greeting').textContent = `${timeOfDayGreeting}, Guest!`;
             };
 
             loginBtn.addEventListener('click', () => { menuDropdown.classList.add('hidden'); showLoginModal(); });
@@ -1551,6 +1636,113 @@
             let currentTab = 'formulas';
             let activeCategory = 'All';
             let activeLetter = 'All';
+	    // Level filter state (default = All)
+let activeLevel = 'All';
+
+// Grab buttons
+const btnLevelAll          = document.getElementById('btnLevelAll');
+const btnLevelBasic        = document.getElementById('btnLevelBasic');
+const btnLevelIntermediate = document.getElementById('btnLevelIntermediate');
+const btnLevelAdvanced     = document.getElementById('btnLevelAdvanced');
+
+['btnLevelAll', 'btnLevelBasic', 'btnLevelIntermediate', 'btnLevelAdvanced'].forEach(id => {
+  const btn = document.getElementById(id);
+  btn?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+
+      btn.click(); // trigger the same as mouse click
+    }
+  });
+});
+
+
+// Function to mark active button + re-render
+function setActiveLevel(level) {
+  activeLevel = level;
+  const buttons = [btnLevelAll, btnLevelBasic, btnLevelIntermediate, btnLevelAdvanced];
+  buttons.forEach(b => {
+    if (!b) return;
+    b.classList.remove('bg-blue-600','text-white','shadow');
+    b.classList.add('bg-transparent');
+  });
+  const map = {All:btnLevelAll,Basic:btnLevelBasic,Intermediate:btnLevelIntermediate,Advanced:btnLevelAdvanced};
+  if (map[level]) {
+    map[level].classList.remove('bg-transparent');
+    map[level].classList.add('bg-blue-600','text-white','shadow');
+  }
+  if (typeof renderContent === 'function') renderContent();
+}
+
+// Wire click events
+btnLevelAll.addEventListener('click',          () => setActiveLevel('All'));
+btnLevelBasic.addEventListener('click',        () => setActiveLevel('Basic'));
+btnLevelIntermediate.addEventListener('click', () => setActiveLevel('Intermediate'));
+btnLevelAdvanced.addEventListener('click',     () => setActiveLevel('Advanced'));
+    
+const btnReset = document.getElementById('btnResetFilters');
+
+btnReset?.addEventListener('click', () => {
+  // Reset all filter states
+  currentTab = 'formulas';
+  activeCategory = 'All';
+  activeLevel = 'All';
+  activeLetter = 'All';
+  searchInput.value = '';
+
+// Highlight the Formulas tab
+document.querySelectorAll('[data-tab]').forEach(btn => {
+  btn.classList.remove('tab-active'); // remove highlight from all
+});
+document.querySelector('[data-tab="formulas"]')?.classList.add('tab-active'); // add to Formulas tab
+
+
+  // Reset tab styles
+  tabs.forEach(t => {
+    t.classList.remove('tab-active');
+    if (t.dataset.tab === 'formulas') {
+      t.classList.add('tab-active');
+    }
+  });
+
+  // Reset level button highlights
+  if (typeof setActiveLevel === 'function') {
+    setActiveLevel('All');
+  }
+
+  // Reset category UI if needed
+  if (typeof updateCategoryUI === 'function') {
+    updateCategoryUI('All');
+  }
+
+  // Reset alphabet highlights (if used)
+  document.querySelectorAll('.alphabet-filter button').forEach(btn => {
+    btn.classList.remove('bg-blue-600', 'text-white');
+    if (btn.dataset.letter === 'All') {
+      btn.classList.add('bg-blue-600', 'text-white');
+    }
+  });
+
+  // Scroll to top (optional)
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Re-render content
+  renderContent();
+});
+
+
+// Allow external UI (dropdown) to change the active category safely
+window.setCategory = function(cat) {
+  // cat must be 'All' or one of your category labels
+  activeCategory = cat;
+  // Update the button label if it exists
+  const label = document.getElementById('selectedCategoryText');
+  if (label) label.textContent = (cat === 'All' ? 'All Categories' : cat);
+  // Re-render with new category
+  if (typeof renderContent === 'function') renderContent();
+  // (Optional) debug:
+  // console.log('[setCategory] ->', cat);
+};
             
             // Load favorites from localStorage
             let favoriteFormulas = JSON.parse(localStorage.getItem('favoriteFormulas')) || [];
@@ -1558,6 +1750,14 @@
 
             formulas.forEach(f => f.favorite = favoriteFormulas.includes(f.name));
             shortcuts.forEach(s => s.favorite = favoriteShortcuts.includes(s.name));
+
+	    // --- WhatsApp share helper ---
+function buildWhatsAppShareURL(item) {
+  const valueToShare = item.syntax || item.keys || '';
+  const text = `${item.name} ${valueToShare}\nTry it: ${location.href}`;
+  return `https://wa.me/?text=${encodeURIComponent(text)}`;
+}
+
 
             const createCard = (item, type) => {
                 const card = document.createElement('div');
@@ -1581,16 +1781,33 @@
                         <p class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-2 rounded break-words">${copyValue}</p>
                         
                         <!-- Button Group -->
-                        <div class="flex items-center gap-2 mt-3">
-                             ${item.example ? `<button class="example-btn w-full px-4 py-2 bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400 transition-colors">Example</button>` : '<div class="w-full"></div>'}
-                            <button class="copy-btn w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors" data-copy="${copyValue}">Copy</button>
-                        </div>
-                    </div>
+<div class="flex items-center gap-2 mt-3">
+  ${item.example ? `<button class="example-btn w-full px-4 py-2 bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400 transition-colors">Example</button>` : '<div class="w-full"></div>'}
+  <button class="copy-btn w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors" data-copy="${copyValue}">Copy</button>
+</div>
+</div>
                 `;
 
                 card.querySelector('.copy-btn').addEventListener('click', e => copyToClipboard(e.target.getAttribute('data-copy')));
                 card.querySelector('.favorite-btn').addEventListener('click', toggleFavorite);
-                
+               
+ // --- WhatsApp Icon Button ---
+const btnGroup = card.querySelector('.flex.items-center.gap-2.mt-3');
+if (btnGroup) {
+  const shareLink = document.createElement('a');
+  shareLink.href = buildWhatsAppShareURL(item);
+  shareLink.target = '_blank';
+  shareLink.rel = 'noopener';
+  shareLink.className = 'w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition-colors';
+  shareLink.setAttribute('aria-label', 'Share on WhatsApp');
+  shareLink.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M20.52 3.48A11.93 11.93 0 0 0 12.06 0C5.5 0 .2 5.29.2 11.82c0 2.08.55 4.11 1.6 5.9L0 24l6.43-1.74a11.77 11.77 0 0 0 5.63 1.43h.01c6.55 0 11.86-5.3 11.86-11.84 0-3.17-1.23-6.16-3.41-8.37ZM12.07 21.3h-.01a9.5 9.5 0 0 1-4.85-1.32l-.35-.21-3.82 1.03 1.02-3.72-.22-.38a9.47 9.47 0 0 1-1.43-5.09c0-5.24 4.27-9.5 9.52-9.5 2.54 0 4.92.99 6.71 2.78a9.43 9.43 0 0 1 2.8 6.7c0 5.24-4.28 9.51-9.57 9.51Zm5.47-7.1c-.3-.16-1.77-.88-2.04-.98-.27-.1-.47-.16-.68.16-.2.31-.78.97-.96 1.17-.18.2-.35.22-.65.08-.3-.15-1.28-.47-2.44-1.49-.9-.78-1.51-1.75-1.69-2.05-.18-.3-.02-.46.13-.62.13-.13.3-.35.44-.52.15-.17.2-.31.3-.52.1-.2.05-.38-.02-.54-.08-.16-.68-1.64-.93-2.24-.25-.6-.5-.5-.68-.51l-.58-.01c-.2 0-.52.07-.8.38-.27.31-1.05 1.03-1.05 2.5s1.08 2.9 1.24 3.11c.15.2 2.12 3.36 5.13 4.7.72.31 1.29.49 1.73.63.73.23 1.4.2 1.93.12.59-.09 1.77-.72 2.02-1.42.25-.7.25-1.28.18-1.41-.07-.13-.27-.2-.57-.36Z"/>
+    </svg>`;
+  btnGroup.appendChild(shareLink);
+}
+
+
                 const exampleBtn = card.querySelector('.example-btn');
                 if (exampleBtn) {
                     exampleBtn.addEventListener('click', () => {
@@ -1617,6 +1834,13 @@
                     const inCategory = activeCategory === 'All' || item.category === activeCategory || currentTab === 'favorites';
                     if (!inCategory) return false;
 
+    		// ⬇️ NEW — Level filter (these are the 4 functional lines)
+   		const inLevel =
+        	activeLevel === 'All' ||
+        	item.level === activeLevel;
+    		if (!inLevel) return false;
+
+
                     const startsWithLetter = activeLetter === 'All' || item.name.toLowerCase().startsWith(activeLetter.toLowerCase());
                     if (!startsWithLetter && currentTab === 'formulas') return false;
                     
@@ -1635,6 +1859,9 @@
                         return synonyms.some(synonym => searchableText.includes(synonym));
                     });
                 });
+
+		// ✅ Sort filtered data alphabetically by name
+		filteredData.sort((a, b) => a.name.localeCompare(b.name));
 
 
                 noResults.classList.toggle('hidden', filteredData.length > 0);
@@ -1806,7 +2033,7 @@
             updateUserUI(savedUser);
 	    } else {
 	    updateUserUI(null);
-	    document.getElementById('greeting').textContent = `${timeOfDayGreeting}, Sonali!`;
+	    document.getElementById('greeting').textContent = `${timeOfDayGreeting}, Guest!`;
 	    }
             renderAlphabetFilters();
             renderCategoryFilters();
@@ -1815,6 +2042,164 @@
             updateTabSlider(document.querySelector('.tab-btn.active-tab'));
         });
     </script>
+<script>
+// 1) Exact category list (first item is the "All" option shown on the button)
+const CATEGORY_LIST = [
+  'All Categories',
+  'Core Excel Starter Kit',
+  'Basics & Logic',
+  'Array & Filter',
+  'Error Handling',
+  'Database & Information',
+  'Advanced Lookup',
+  'Conditional Math',
+  'Dashboard & Sheet Info',
+  'Dynamic Array & Lambda',
+  'Basic Math & Logical Checks',
+  'Date & Time',
+  'Financial & Banking',
+  'Loan & Credit',
+  'Investment & Returns',
+  'Statistical',
+  'Text & Formatting',
+  'Count & Frequency',
+  'Math & Rounding',
+  'Logical & Comparison',
+  'Lookup & Reference',
+  'Probability & Statistical Advanced',
+  'Logical & Audit Helper',
+  'Custom Financial Utilities',
+  'Advanced Statistical & Analytical Tools',
+  'Array Math & Matrix Operations',
+  'Dynamic Data Cleaning & Transformation',
+  'Business Calendar Automation',
+  'Financial Modelling',
+  'Power Query / Data Model Helpers',
+  'Bank Branch Performance Metrics',
+  'Data Validation & List Automation',
+  'Inventory & Procurement Management',
+  'Text Formatting & Number Display',
+  'MSME Loan Monitoring',
+  'Agriculture Credit Analysis',
+  'Deposit Mobilization & Analysis',
+  'Branch Ranking & Scorecard',
+  'Operational Efficiency Metrics',
+  'Profit & Loss Computation',
+  'Expense & Budget Monitoring',
+  'Banking & Loan Analysis',
+  'Data Analysis Helper',
+  'Engineering, Scientific & Math',
+  'Power Query / Data Model',
+  'Dashboard Formula Tricks',
+  'Rarely Known & Handy',
+  'Excel → PowerPoint',
+  'Excel + AI Integration',
+  'Excel 365 AI (Preview)',
+  'Index & Search Helpers',
+  'Text',
+  'Financial',
+  'Engineering & Complex',
+  'Conversions & Bases',
+  'Math & Trig',
+  'Measurement & Unit Conversion',
+  'Temperature & Physical Constants',
+  'Household & Utility',
+  'Decision Support',
+  'Simulation',
+  'Scenario Analysis',
+  'Web & API',
+  'AI & Copilot',
+  'Matrix & Geometry',
+  'Date Intelligence',
+  'Data Science',
+  'Banking KPI',
+  'Logical',
+  'Optimization',
+  'Measurement',
+  'Math',
+  'Measurement & Geometry',
+  'Math Constant',
+  'Geometry',
+  'HR & Operations',
+  'HR & Payroll',
+  'Array Math',
+  'Text Analytics',
+  'Market & Finance',
+  'Finance',
+  'Loan',
+  'Data Analysis',
+  'Forecasting',
+  'Probability',
+  'Operations & Supply Chain',
+  'Web Integration',
+  'Information',
+  'Cross-Sheet & File',
+  'Business Math',
+  'Time & Shift',
+  'Inventory',
+  'Banking & Loan',
+  'Risk & Portfolio',
+  'Dynamic Filter',
+  'Automation',
+  'Audit',
+  'Forecast',
+  'Performance',
+  'Conditional Formatting'
+];
+
+(function initCategoryDropdown() {
+  const btn   = document.getElementById('categoryDropdownBtn');
+  const list  = document.getElementById('categoryDropdownList');
+  // Prevent internal scroll/press events from closing the dropdown
+['pointerdown', 'wheel', 'touchstart', 'touchmove'].forEach(evt => {
+  list.addEventListener(evt, (e) => {
+    e.stopPropagation();   // stop this event from reaching the global listener
+  }, { passive: false });
+});
+
+  const label = document.getElementById('selectedCategoryText');
+  if (!btn || !list || !label) return; // safety
+
+  // Build menu items
+  list.innerHTML = CATEGORY_LIST.map(cat => `
+    <button type="button" data-cat="${cat}"
+            class="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">
+      ${cat}
+    </button>
+  `).join('');
+
+  // Toggle open/close
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    list.classList.toggle('hidden');
+  });
+
+  // Click outside closes it
+  document.addEventListener('pointerdown', (e) => {
+  const t = e.target;
+  // Close only if click/press is outside BOTH the button and the dropdown
+  if (!btn.contains(t) && !list.contains(t)) {
+    list.classList.add('hidden');
+  }
+});
+
+
+  // Handle selection
+  list.querySelectorAll('button[data-cat]').forEach(item => {
+    item.addEventListener('click', () => {
+      const chosen = item.getAttribute('data-cat');
+      // Use the Step-1 hook if present; else fallback to label only
+      if (typeof window.setCategory === 'function') {
+        window.setCategory(chosen === 'All Categories' ? 'All' : chosen);
+      } else {
+        label.textContent = chosen; // visual only if hook missing
+      }
+      list.classList.add('hidden');
+    });
+  });
+})();
+</script>
+
 </body>
 </html>
 
